@@ -1,6 +1,6 @@
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import { useState } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Divider } from '@mui/material';
 import './App.css';
 
 
@@ -12,7 +12,6 @@ type Message = {
     direction?: 'outgoing' | 'incoming'; // Include if you use direction
 };
 const API_KEY = process.env.OPEN_AI_KEY;
-console.log('API_KEY: ', API_KEY);
 
 const App = () => {
     const [inputString, setInputString] = useState<string>("");
@@ -52,7 +51,7 @@ const App = () => {
                 {
                     role: "system", content: 
                     `
-                        You help me by fixing my grammer and spelling,
+                        You help me by fixing my grammar and spelling,
                         make the less posible changes in the text and in the style,
                         return only the corrected text or the unchanged text.
                     ` },
@@ -74,11 +73,12 @@ const App = () => {
 
     return (
         <div className="App">
-            <Box sx={{ width: '100vw', height: "100vh", display: "flex", flexDirection: "column" }}>
+            <Box sx={{ width: '100vw', height: "100vh", display: "flex",flexDirection: "column"}}>
                 <TextareaAutosize
+                    autoFocus
                     disabled={loading}
-                    style={{ flex: 1, resize: "none", fontSize: "1.1Rem" }}
-                    placeholder="Type your message here"
+                    style={{ flex: .8, resize: "none", fontSize: "1.1Rem", padding: '13px', border: 'none' }}
+                    placeholder="Place your text here"
                     value={inputString}
                     onChange={(e) => setInputString(e.target.value)}
                     onKeyUp={(e) => {
@@ -87,9 +87,19 @@ const App = () => {
                         }
                     }}
                 />
-                <Button onClick={() => handleSendRequest(inputString)}>Send</Button>
-                <Box sx={{ flex: 1, resize: "none", fontSize: "1.1Rem" }}> {/* Response occupies bottom half */}
-                    <>{chatResponse.split("\n").map((line, index) => <div key={index}>{line}</div>)}</>
+                <Button 
+                    onClick={() => handleSendRequest(inputString)}
+                    variant='contained' color='primary'
+                    sx={{marginLeft: 'auto', marginTop: '12px', marginBottom: '12px', marginRight: '10px'}}
+                >
+                    Send
+                </Button>
+                <Divider/>
+                <Box sx={{ flex: 1, resize: "none", fontSize: "1.1Rem", padding: '5px' }}>
+
+                    {loading ? <div>Loading...</div> : chatResponse.split("\n").map((line, index) =>
+                        <div key={index}>{line}</div>)
+                    }
                 </Box>
             </Box>
         </div>
