@@ -1,9 +1,8 @@
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import { useState } from 'react';
-import './App.css';
 import { Box, Button } from '@mui/material';
+import './App.css';
 
-const API_KEY = "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";
 
 // Define a type for the message object
 type Message = {
@@ -12,13 +11,14 @@ type Message = {
     sentTime?: string; // Optional if you want to include sent time
     direction?: 'outgoing' | 'incoming'; // Include if you use direction
 };
+const API_KEY = process.env.OPEN_AI_KEY;
+console.log('API_KEY: ', API_KEY);
 
 const App = () => {
     const [inputString, setInputString] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [chatResponse, setChatResponse] = useState<string>("");
     const handleSendRequest = async (text: string) => {
-
         const newMessage: Message = {
             message: text,
             direction: 'outgoing',
@@ -50,7 +50,12 @@ const App = () => {
             "model": "gpt-4-1106-preview",
             "messages": [
                 {
-                    role: "system", content: `You help me by fixing my grammer and spelling, make the less posible changes in the text and in the style, don't return any comment, clarification or nothing` },
+                    role: "system", content: 
+                    `
+                        You help me by fixing my grammer and spelling,
+                        make the less posible changes in the text and in the style,
+                        return only the corrected text or the unchanged text.
+                    ` },
                 ...apiMessages,
             ],
         };
