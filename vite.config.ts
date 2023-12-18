@@ -7,6 +7,6 @@ export default defineConfig(({ mode }) => {
       'process.env.OPEN_AI_KEY': JSON.stringify(env.OPEN_AI_KEY)
     },
     plugins: [react()],
-    base: '/gpt-1/'
+    base: '/'
   }
 })
